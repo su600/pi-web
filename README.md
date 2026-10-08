@@ -113,6 +113,7 @@ npx @agegr/pi-web@latest
 - **Agent data**: Pi Web reads pi data from `~/.pi/agent` by default, including session files under `sessions/<encoded-cwd>/<timestamp>_<uuid>.jsonl`. Set `PI_CODING_AGENT_DIR` to use another pi agent directory.
 - **Filesystem access**: Pi Web must be able to read the agent data directory and the working directories recorded by its sessions. Run Pi Web in the same filesystem environment as pi when sharing existing sessions.
 - **Shared configuration**: the Models panel uses pi's model, settings, and credential storage, so changes are visible to both interfaces.
+- **Default model returns HTTP 500**: the default-model and enabled-model APIs (`/api/models/default`, `/api/models/enabled`) import the `@earendil-works/*` packages at load time. If `node_modules` is missing or incomplete, every request fails with HTTP 500 and the service log shows `Cannot find package '@earendil-works/pi-ai'`. Restore the dependencies from the lockfile in the install directory with `npm ci`, then restart Pi Web. `npm ci --ignore-scripts` is enough on Linux; if `node-pty` fails to load, run `node node_modules/node-pty/scripts/prebuild.js`.
 - **File access boundary**: the file browser is limited to working directories selected in Pi Web and project or session roots it already knows about; it is not a general filesystem browser.
 - **Git worktrees**: see [Worktrees in Pi Web](./docs/worktrees.md) for switcher visibility, worktree creation, and removal behavior.
 

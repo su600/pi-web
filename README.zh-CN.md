@@ -112,6 +112,7 @@ npx @agegr/pi-web@latest
 - **智能体数据**：Pi Web 默认读取 `~/.pi/agent` 下的 pi 数据，包括 `sessions/<编码后的工作目录>/<时间戳>_<uuid>.jsonl` 中的会话文件。可通过 `PI_CODING_AGENT_DIR` 指定其他 pi agent 目录。
 - **文件系统访问**：Pi Web 必须能读取智能体数据目录及会话记录中的工作目录。与现有 pi 会话共用数据时，请让 Pi Web 运行在与 pi 相同的文件系统环境中。
 - **共享配置**：模型面板使用 pi 的模型、设置和凭据存储，因此两种界面都能看到相关更改。
+- **修改默认模型报 HTTP 500**：默认模型和可用模型接口（`/api/models/default`、`/api/models/enabled`）在加载时就会 import `@earendil-works/*` 包。如果 `node_modules` 缺失或不完整，每次请求都会返回 HTTP 500，服务日志里是 `Cannot find package '@earendil-works/pi-ai'`。请在安装目录里执行 `npm ci` 按 lockfile 恢复依赖，然后重启 Pi Web。Linux 上 `npm ci --ignore-scripts` 即可；如果 `node-pty` 加载失败，执行 `node node_modules/node-pty/scripts/prebuild.js`。
 - **文件访问边界**：文件浏览器仅能访问在 Pi Web 中选择过的工作目录，以及它已识别的项目或会话根目录；它不是通用的文件系统浏览器。
 - **Git worktree**：切换器何时显示、如何创建 worktree，以及删除会产生什么影响，见 [Pi Web 里的 Worktree](./docs/worktrees.zh-CN.md)。
 
